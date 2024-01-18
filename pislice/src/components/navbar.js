@@ -7,13 +7,13 @@ export default function NavBar() {
             <a href="default.asp">Home</a>
           </li>
           <li className="rounded-lg shadow-lg bg-white p-2 pl-4 pr-4">
-            <a href="news.asp">News</a>
+            <a href="#data">Data</a>
           </li>
           <li className="rounded-lg shadow-lg bg-white p-2 pl-4 pr-4">
-            <a href="contact.asp">Contact</a>
+            <a href="">Contact</a>
           </li>
           <li className="rounded-lg shadow-lg bg-white p-2 pl-4 pr-4">
-            <a href="about.asp">About</a>
+            <a href="">About</a>
           </li>
         </ul>
       </div>
