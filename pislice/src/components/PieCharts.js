@@ -1,8 +1,7 @@
-// components/BarChart.js
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
 
-export default function BarChart() {
+export default function PieChart() {
   const data = {
     labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
     datasets: [
@@ -30,18 +29,10 @@ export default function BarChart() {
     ],
   };
 
-  const options = {
-    scales: {
-      y: {
-        beginAtZero: true,
-      },
-    },
-  };
-
   return (
-    <main className="flex  flex-col items-center w-full ">
-      <div className="w-[700px] h-[350px]">
-        <Bar data={data} options={options} />
+    <main>
+      <div>
+        <Pie data={data} />
       </div>
     </main>
   );

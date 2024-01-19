@@ -1,12 +1,12 @@
 "use client";
-{
-  /* <meta name="viewport" content="width=device-width, initial-scale=1" />; */
-}
+
 import Image from "next/image";
 import NavBar from "@/components/navbar.js";
 import Chart from "chart.js/auto";
 import { getRelativePosition } from "chart.js/helpers";
 import BarChart from "@/components/Barcharts";
+import PieChart from "@/components/PieCharts";
+import LineGraph from "@/components/LineGraph";
 import { useEffect } from "react";
 
 export default function Home() {
@@ -16,6 +16,8 @@ export default function Home() {
   }, []);
   return (
     <main className="  scroll-smooth flex min-h-screen min-w-screen bg-gradient-to-r from-rose-100 to-teal-100 flex-col items-center justify-between">
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+
       <div className="bg-gradient-to-r from-rose-100 to-teal-100 flex flex-col w-full min-h-screen">
         <NavBar></NavBar>
         <section className="">
@@ -39,7 +41,7 @@ export default function Home() {
             </div>
             <div>
               <img
-                src="/images/store.png"
+                src="/images/store2.png"
                 className="md:w-[500px] md:h-[500px]   sm:w-[100px] sm:h-[100px]"
               />
             </div>
@@ -50,9 +52,16 @@ export default function Home() {
             <div className="text-gray-500 font-bold  flex text-[50px]  shadow-xl justify-center">
               <h1>Data</h1>
             </div>
-            <div className=" p-10 flex flex-row w-full h-full justify-between ">
-              <BarChart />
-              <BarChart />
+            <div className="  p-10 flex flex-row w-full h-full justify-between ">
+              <div className="w-[700px] h-[350px]">
+                <BarChart />
+              </div>
+              <div className="w-[400px] h-[350px]">
+                <PieChart />
+              </div>
+              <div className="w-[400px] h-[350px]">
+                <LineGraph />
+              </div>
             </div>
           </div>
         </section>
