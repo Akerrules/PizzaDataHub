@@ -7,13 +7,32 @@ import { getRelativePosition } from "chart.js/helpers";
 import BarChart from "@/components/Barcharts";
 import PieChart from "@/components/PieCharts";
 import LineGraph from "@/components/LineGraph";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [reviews, setReviews] = useState({});
+  const [pichart, setPichart] = useState([]);
   useEffect(() => {
     // Code to run when dependencies change
     typewriter();
   }, []);
+
+  const fetchReviews = async () => {
+    try {
+      const response = await fetch("/api/reviews");
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("Error Reviews", error);
+    }
+  };
+  useEffect(() => {
+    fetchReviews();
+  }, []);
+
+  useEffect(() => {
+    setPichart(cleanReviews(reviews));
+  }, [reviews]);
   return (
     <main className="  scroll-smooth flex min-h-screen min-w-screen bg-gradient-to-r from-rose-100 to-teal-100 flex-col items-center justify-between">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -47,22 +66,47 @@ export default function Home() {
             </div>
           </div>
         </section>
-        <section id="data" className="min-h-screen bg-white min-w-screen">
+        <section id="data" className="min-h-screen  bg-white  min-w-screen">
           <div className="h-full">
-            <div className="text-gray-500 font-bold  flex text-[50px]  shadow-xl justify-center">
-              <h1>Data</h1>
+            <div className=" font-bold  flex text-[50px]  shadow-xl justify-center">
+              <p className=" text-transparent bg-clip-text bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-emerald-500 via-rose-200 to-blue-700">
+                Data
+              </p>
             </div>
             <div className="  p-10 flex flex-row w-full h-full justify-between ">
               <div className="w-[700px] h-[350px]">
                 <BarChart />
               </div>
               <div className="w-[400px] h-[350px]">
-                <PieChart />
+                {pichart && <PieChart test={pichart} />}
               </div>
               <div className="w-[400px] h-[350px]">
                 <LineGraph />
               </div>
             </div>
+          </div>
+        </section>
+        <section
+          id="contact-us"
+          className="min-h-screen bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-yellow-200 via-pink-200 to-pink-400 min-w-screen flex flex-col"
+        >
+          <div className="text-gray-500 font-bold  flex text-[50px]  shadow-xl justify-center">
+            <h1>Contact Us</h1>
+          </div>
+          <div className="flex justify-center items-center">
+            <form className="bg-white shadow-xl rounded-xl mt-10 w-96 h-96 ">
+              <div className="p-5">
+                <label for="first-name" className="text-black">
+                  First Name
+                </label>
+                <input
+                  type="text"
+                  id="first-name"
+                  className="outline-black outline-4 m-4 shadow-xl text-black rounded-md"
+                  placeholder="First Name"
+                ></input>
+              </div>
+            </form>
           </div>
         </section>
       </div>
@@ -109,4 +153,14 @@ function typewriter() {
   }
 
   type(); // Start the typewriter effect
+}
+
+function cleanReviews(reviewsData) {
+  const label = Object.keys(reviewsData);
+  var numericalData = new Array();
+  for (let i = 0; i < label.length; i++) {
+    numericalData.push(reviewsData[label[i]]);
+  }
+  console.log(numericalData);
+  return [label, numericalData];
 }

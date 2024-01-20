@@ -1,13 +1,14 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 
-export default function PieChart() {
+export default function PieChart({ test }) {
+  console.log(test);
   const data = {
-    labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    labels: test[0], //need to provide label like happy sad
     datasets: [
       {
         label: "# of Votes",
-        data: [12, 19, 3, 5, 2, 3],
+        data: test[1],
         backgroundColor: [
           "rgba(255, 99, 132, 0.2)",
           "rgba(54, 162, 235, 0.2)",
