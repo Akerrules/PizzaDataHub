@@ -29,6 +29,20 @@ def read_json_file(file_path):
 
 orderdData = read_json_file("../data-sets/order_data.json")
 reviewData = read_json_file("../data-sets/review_data.json")
+priceData = read_json_file("../data-sets/pricing_data.json")
+
+stores = {}
+
+
+def get_all_store_name():
+    for i in reviewData:
+        if(i["store"] not in stores ):
+            stores[i["store"]] = i["store"]
+    for i in orderdData:
+        if(i["store"] not in stores ):
+            stores[i["store"]] = i["store"]
+
+get_all_store_name()
 
 #filter data
 
@@ -40,6 +54,8 @@ def getCityOrder(city):
             result.append(i)
 
     return result
+
+
 
 @app.route('/order/<city>/<type>/<size>', methods=['GET'])
 def getOrderbyPizzaSize(city, size,type):
@@ -81,7 +97,16 @@ def hello_world():
    
     return jsonify("Hello World!")
 
+@app.route('/api/stores', methods=['GET'])
+def Get_store():
+    return stores
 
+def getstores_for_Reviews():
+    stores = {}
+    for i in reviewData:
+        if(i["store"] not in stores ):
+            stores[i["store"]] = i["store"]
 
+    return stores
 
 

@@ -73,38 +73,105 @@ export default function Home() {
                 Data
               </p>
             </div>
-            <div className="  p-10 flex flex-row w-full h-full justify-between ">
-              <div className="w-[700px] h-[350px]">
-                <BarChart />
+            <div className="  p-10 flex flex-col w-full h-full   ">
+              <div className="flex flex-row justify-between mr-10 ml-10">
+                <div className="bg-white p-4 shadow-xl rounded-xl">
+                  <div className="">
+                    <select className="bg-gray-400 rounded-xl  pl-1 pr-">
+                      <option value="rigatoni">Rigatoni</option>
+                      <option value="dave">Dave</option>
+                      <option value="pumpernickel">Pumpernickel</option>
+                      <option value="reeses">Reeses</option>
+                    </select>
+                  </div>
+
+                  <div className="w-[400px] h-[400px] ">
+                    {pichart && <PieChart test={pichart} />}
+                  </div>
+                </div>
+                <div className="bg-white p-4 shadow-xl rounded-xl">
+                  <div className="w-[700px] h-[350px] ">
+                    <BarChart />
+                  </div>
+                </div>
               </div>
-              <div className="w-[400px] h-[350px]">
-                {pichart && <PieChart test={pichart} />}
-              </div>
-              <div className="w-[400px] h-[350px]">
-                <LineGraph />
+
+              <div className="flex flex-row pt-10 mr-10 ml-10">
+                <div className="bg-white p-4 shadow-xl rounded-xl">
+                  <div className="w-[600px] h-[300px] ">
+                    <LineGraph />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </section>
+        {/*bg-[conic-gradient(at_top_right,_var(--tw-gradient-stops))] from-indigo-200 via-red-200 to-yellow-100*/}
         <section
           id="contact-us"
-          className="min-h-screen bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-yellow-200 via-pink-200 to-pink-400 min-w-screen flex flex-col"
+          className="min-h-screen  bg-[conic-gradient(at_top_left,_var(--tw-gradient-stops))] from-orange-100 via-gray-100 to-purple-800 min-w-screen flex flex-col"
         >
-          <div className="text-gray-500 font-bold  flex text-[50px]  shadow-xl justify-center">
-            <h1>Contact Us</h1>
+          <div className=" font-bold  flex text-[50px]  shadow-xl justify-center">
+            <p className="text-transparent bg-clip-text bg-[conic-gradient(at_top,_var(--tw-gradient-stops))] from-indigo-600 via-red-200 to-yellow-100">
+              Contact Us
+            </p>
           </div>
           <div className="flex justify-center items-center">
-            <form className="bg-white shadow-xl rounded-xl mt-10 w-96 h-96 ">
-              <div className="p-5">
-                <label for="first-name" className="text-black">
-                  First Name
-                </label>
-                <input
-                  type="text"
-                  id="first-name"
-                  className="outline-black outline-4 m-4 shadow-xl text-black rounded-md"
-                  placeholder="First Name"
-                ></input>
+            <form className="bg-white shadow-xl rounded-xl mt-10   ">
+              <div className="flex flex-col items-center">
+                <div className="flex flex-row items-end">
+                  <div className="p-5">
+                    <label
+                      for="first-name"
+                      className=" font-bold text-gray-700"
+                    >
+                      First Name:
+                    </label>
+                    <input
+                      type="text"
+                      id="first-name"
+                      className="outline-black outline-4 m-4 p-2 shadow-xl text-black rounded-md"
+                      placeholder="First Name"
+                    ></input>
+                  </div>
+                  <div className="p-5">
+                    <label for="last-name" className="text-gray-700 font-bold">
+                      Last Name:
+                    </label>
+                    <input
+                      type="text"
+                      id="last-name"
+                      className="outline-black outline-4 m-4 p-2 shadow-xl text-black rounded-md"
+                      placeholder="First Name"
+                    ></input>
+                  </div>
+                </div>
+                <div className="flex flex-row items-end ">
+                  <div className="p-5">
+                    <label for="email" className=" font-bold text-gray-700">
+                      Email:
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      pattern=".+@example\.com"
+                      className="outline-black outline-4 m-4 p-2 shadow-xl text-black rounded-md"
+                      placeholder="First Name"
+                    ></input>
+                  </div>
+                  <div className="p-5">
+                    <label for="phone" className=" font-bold text-gray-700">
+                      Phone Number:
+                    </label>
+                    <input
+                      type="number"
+                      id="phone"
+                      pattern=".+@example\.com"
+                      className="outline-black outline-4 m-4 p-2 shadow-xl text-black rounded-md"
+                      placeholder="First Name"
+                    ></input>
+                  </div>
+                </div>
               </div>
             </form>
           </div>
