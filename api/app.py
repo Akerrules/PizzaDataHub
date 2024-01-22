@@ -48,7 +48,7 @@ pizzatype = []
 
 
 
-def cal_daily_Revenue():
+def cal_daily_revenue():
     result = {}
     for record in orderdData:
         year, month, day = record["date"].split("-")
@@ -58,9 +58,12 @@ def cal_daily_Revenue():
             result[year] = {}
         if month not in result[year]:
             result[year][month] = {}
-        result[year][month][day] = daily_revenue
+        if day not in result[year][month]:
+            result[year][month][day] = 0
+        result[year][month][day] += daily_revenue
 
     return result
+
 
 
     # def cal_monthly_Revenue(daily_revenue):
@@ -68,7 +71,7 @@ def cal_daily_Revenue():
     #     for i in daily_revenue:
     #         result.append(i[])
     
-daily_revenue= cal_daily_Revenue()
+daily_revenue= cal_daily_revenue()
 get_all_store_name()
 
 #filter data
@@ -97,12 +100,11 @@ def get_Orderby_Pizzatype(type):
 
 @app.route('/api/order/totalsale/<year>', methods=['GET'])
 def getTotalSale(year):
+    total_revenue = 0
     if year in daily_revenue:
-        total_revenue = 0
-    for month in daily_revenue.values():
-        for day in month.values():
-            for day_revenue in day.values():
-                total_revenue += day_revenue
+        for month, days in daily_revenue[year].items():
+            for day, revenue in days.items():
+                total_revenue += revenue
         return str(total_revenue)
     else:
         return f"No data available for the year {year}"
