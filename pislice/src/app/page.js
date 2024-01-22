@@ -138,6 +138,13 @@ export default function Home() {
                 Data
               </p>
             </div>
+            <div className=" flex justify-center items center p-4 mt-4 text-black font-bold ">
+              {totalmoney && (
+                <p className="bg-gray-200 shadow-xl rounded-xl p-4 mt-4 ">
+                  2023 Revenue: {totalmoney}$
+                </p>
+              )}
+            </div>
             <div className="  p-10 flex flex-col w-full h-full   ">
               <div className="flex flex-row justify-between mr-10 ml-10">
                 <div className="bg-white p-4 shadow-xl rounded-xl">
@@ -183,14 +190,11 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex flex-row pt-10 mr-10 ml-10">
+              <div className="flex  pt-10 mr-10 ml-10">
                 <div className="bg-white p-4 shadow-xl rounded-xl">
-                  <div className="w-[600px] h-[300px] ">
+                  <div className="w-[1400px] h-[700px] ">
                     <LineGraph />
                   </div>
-                </div>
-                <div className="bg-white p-4 text-black shadow-xl rounded-xl">
-                  {totalmoney && <p>Total money made in 2023 {totalmoney}</p>}
                 </div>
               </div>
             </div>
