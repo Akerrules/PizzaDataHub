@@ -44,23 +44,24 @@ def get_all_store_name():
         if(i["store"] not in stores ):
             stores[i["store"]] = i["store"]
 
+pizzatype = []
+
+
 
 def cal_daily_Revenue():
-    result = []
-    for i in orderdData:
-        record={}
-        tmp = i["date"].split("-")
-        year = tmp[0]
-        month = tmp[1]
-        day = tmp[2]
-        tmp_day_Rev=0
-        for j in i["items"]:
-            tmp_day_Rev = priceData[j["type"]][j["size"]] + tmp_day_Rev
-        record[year] = {month:{day:tmp_day_Rev}}
-        print(record)
-        result.append(record)
-        
+    result = {}
+    for record in orderdData:
+        year, month, day = record["date"].split("-")
+        daily_revenue = sum(priceData[item["type"]][item["size"]] for item in record["items"])
+
+        if year not in result:
+            result[year] = {}
+        if month not in result[year]:
+            result[year][month] = {}
+        result[year][month][day] = daily_revenue
+
     return result
+
 
     # def cal_monthly_Revenue(daily_revenue):
     #     result=[]
@@ -83,21 +84,29 @@ def get_City_Order(city):
 
 
 
-@app.route('/order/<city>/<type>/<size>', methods=['GET'])
-def get_Orderby_PizzaSize(city, size,type):
-    result = []
+@app.route('/api/order/store/<type>', methods=['GET'])
+
+def get_Orderby_Pizzatype(type):
+    result = {}
     for i in orderdData:
-        if (city == '*' or i["store"] == city) and \
-        (type == '*' or i["items"][0]["type"].lower() == type) and \
-        (size == '*' or i["items"][0]["size"].lower() == size):
-            result.append(i)
+        if(i["store"] not in result and i["items"][0]["type"].lower()==type.lower()):
+            result[i["store"]] = 1
+        elif i["items"][0]["type"].lower()==type.lower() :
+            result[i["store"]] = 1+ result[i["store"]]
     return result
 
+@app.route('/api/order/totalsale/<year>', methods=['GET'])
+def getTotalSale(year):
+    if year in daily_revenue:
+        total_revenue = 0
+    for month in daily_revenue.values():
+        for day in month.values():
+            for day_revenue in day.values():
+                total_revenue += day_revenue
+        return str(total_revenue)
+    else:
+        return f"No data available for the year {year}"
 
-
-def getTotalSale():
-    
-    return 0
 
 
 

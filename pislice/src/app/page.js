@@ -8,13 +8,16 @@ import BarChart from "@/components/Barcharts";
 import PieChart from "@/components/PieCharts";
 import LineGraph from "@/components/LineGraph";
 import { useEffect, useState } from "react";
+import { type } from "os";
+import { userAgent } from "next/server";
 
 export default function Home() {
   const [reviews, setReviews] = useState({});
   const [pichart, setPichart] = useState([]);
   const [barChart, setBarChart] = useState([]);
   const [storeOrderData, setStoreOrderData] = useState({});
-
+  const [totalmoney, setTotalMoney] = useState(0);
+  const [OrderType, setOrderType] = useState({});
   const [stores, setStores] = useState({});
 
   useEffect(() => {
@@ -32,6 +35,25 @@ export default function Home() {
     }
   };
 
+  const fetchYearlyRev = async (year) => {
+    try {
+      const response = await fetch("/api/order/totalsale/" + year);
+      const data = await response.json();
+      setTotalMoney(data);
+    } catch (error) {
+      console.error("Error Reviews", error);
+    }
+  };
+
+  const fetchPizzatype = async (type) => {
+    try {
+      const response = await fetch("/api/order/store/" + type);
+      const data = await response.json();
+      setStoreOrderData(data);
+    } catch (error) {
+      console.error("Error pizza order type", error);
+    }
+  };
   const fetchStoreOrder = async () => {
     try {
       const response = await fetch("/api/order/store");
@@ -55,12 +77,16 @@ export default function Home() {
     fetchReviews();
     fetchStores();
     fetchStoreOrder();
+    fetchYearlyRev("2023");
   }, []);
 
   useEffect(() => {
     setPichart(cleanReviews(reviews));
-    setBarChart(cleanNumOrderStore(storeOrderData));
   }, [reviews]);
+
+  useEffect(() => {
+    setBarChart(cleanNumOrderStore(storeOrderData));
+  }, [storeOrderData]);
 
   const setReviewCity = async (city) => {
     try {
@@ -71,6 +97,7 @@ export default function Home() {
       console.error("Error Review by city", error);
     }
   };
+
   return (
     <main className="  scroll-smooth flex min-h-screen min-w-screen bg-gradient-to-r from-rose-100 to-teal-100 flex-col items-center justify-between">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -134,6 +161,22 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="bg-white p-4 shadow-xl rounded-xl">
+                  <div className="">
+                    <select
+                      onChange={(e) => {
+                        fetchPizzatype(e.target.value);
+                      }}
+                      className="bg-gray-400 rounded-xl  pl-1 pr-"
+                    >
+                      <option value={"*"}>All</option>
+                      <option value={"Cheese"}>Cheese</option>
+                      <option value={"Pepperoni"}>Pepperoni</option>
+                      <option value={"Deluxe"}>Deluxe</option>
+                      <option value={"Deluxe"}>Deluxe</option>
+                      <option value={"Meatlovers"}>Meatlovers</option>
+                    </select>
+                  </div>
+
                   <div className="w-[700px] h-[350px] ">
                     {barChart && <BarChart atrributes={barChart} />}
                   </div>
@@ -145,6 +188,9 @@ export default function Home() {
                   <div className="w-[600px] h-[300px] ">
                     <LineGraph />
                   </div>
+                </div>
+                <div className="bg-white p-4 text-black shadow-xl rounded-xl">
+                  {totalmoney && <p>Total money made in 2023 {totalmoney}</p>}
                 </div>
               </div>
             </div>
@@ -215,6 +261,24 @@ export default function Home() {
                       placeholder="First Name"
                     ></input>
                   </div>
+                </div>
+                <div className="">
+                  <div className="p-5 flex flex-col">
+                    <label for="message" className=" font-bold text-gray-700">
+                      Message:
+                    </label>
+                    <textarea
+                      type="number"
+                      id="message"
+                      pattern=".+@example\.com"
+                      className="outline-black outline-4 m-4 p-2 shadow-xl text-black rounded-md"
+                      placeholder="First Name"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="bg-gradient-to-r from-indigo-300 to-purple-400 rounded-lg font-bold text-2xl  p-3 mb-5 mb-5shadow-xl ">
+                  <input type="submit" value="Submit" text="submit" />
                 </div>
               </div>
             </form>

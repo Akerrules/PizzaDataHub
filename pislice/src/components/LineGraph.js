@@ -6,7 +6,7 @@ export default function LineGraph() {
     labels: ["January", "February", "March", "April", "May", "June"],
     datasets: [
       {
-        label: "My First dataset",
+        label: "Test",
         fill: false,
         lineTension: 0.1,
         backgroundColor: "rgba(75,192,192,0.4)",
