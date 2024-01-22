@@ -12,6 +12,11 @@ import { useEffect, useState } from "react";
 export default function Home() {
   const [reviews, setReviews] = useState({});
   const [pichart, setPichart] = useState([]);
+  const [barChart, setBarChart] = useState([]);
+  const [storeOrderData, setStoreOrderData] = useState({});
+
+  const [stores, setStores] = useState({});
+
   useEffect(() => {
     // Code to run when dependencies change
     typewriter();
@@ -26,13 +31,46 @@ export default function Home() {
       console.error("Error Reviews", error);
     }
   };
+
+  const fetchStoreOrder = async () => {
+    try {
+      const response = await fetch("/api/order/store");
+      const data = await response.json();
+      setStoreOrderData(data);
+    } catch (error) {
+      console.error("Error StoreOder", error);
+    }
+  };
+
+  const fetchStores = async () => {
+    try {
+      const response = await fetch("/api/stores");
+      const data = await response.json();
+      setStores(data);
+    } catch (error) {
+      console.error("Error Stores", error);
+    }
+  };
   useEffect(() => {
     fetchReviews();
+    fetchStores();
+    fetchStoreOrder();
   }, []);
 
   useEffect(() => {
     setPichart(cleanReviews(reviews));
+    setBarChart(cleanNumOrderStore(storeOrderData));
   }, [reviews]);
+
+  const setReviewCity = async (city) => {
+    try {
+      const response = await fetch("/api/reviews/" + city);
+      const data = await response.json();
+      setReviews(data);
+    } catch (error) {
+      console.error("Error Review by city", error);
+    }
+  };
   return (
     <main className="  scroll-smooth flex min-h-screen min-w-screen bg-gradient-to-r from-rose-100 to-teal-100 flex-col items-center justify-between">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -77,11 +115,17 @@ export default function Home() {
               <div className="flex flex-row justify-between mr-10 ml-10">
                 <div className="bg-white p-4 shadow-xl rounded-xl">
                   <div className="">
-                    <select className="bg-gray-400 rounded-xl  pl-1 pr-">
-                      <option value="rigatoni">Rigatoni</option>
-                      <option value="dave">Dave</option>
-                      <option value="pumpernickel">Pumpernickel</option>
-                      <option value="reeses">Reeses</option>
+                    <select
+                      onChange={(e) => {
+                        setReviewCity(e.target.value);
+                      }}
+                      className="bg-gray-400 rounded-xl  pl-1 pr-"
+                    >
+                      {Object.keys(stores).map((key) => (
+                        <option key={key} value={stores[key]}>
+                          {key}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -91,7 +135,7 @@ export default function Home() {
                 </div>
                 <div className="bg-white p-4 shadow-xl rounded-xl">
                   <div className="w-[700px] h-[350px] ">
-                    <BarChart />
+                    {barChart && <BarChart atrributes={barChart} />}
                   </div>
                 </div>
               </div>
@@ -228,6 +272,14 @@ function cleanReviews(reviewsData) {
   for (let i = 0; i < label.length; i++) {
     numericalData.push(reviewsData[label[i]]);
   }
-  console.log(numericalData);
+  return [label, numericalData];
+}
+
+function cleanNumOrderStore(storeOrderData) {
+  const label = Object.keys(storeOrderData);
+  var numericalData = new Array();
+  for (let i = 0; i < label.length; i++) {
+    numericalData.push(storeOrderData[label[i]]);
+  }
   return [label, numericalData];
 }
